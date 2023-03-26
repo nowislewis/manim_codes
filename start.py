@@ -72,7 +72,6 @@ class ArrayScene(Scene):
 
 
 class MultiC(Scene):
-
     def construct(self):
         # Create the array
         self.camera.frame_width = 40
@@ -82,16 +81,6 @@ class MultiC(Scene):
         array.arrange_in_grid(h, w, 0.5)
         self.add(array)
 
-        index_str = ["i=", "j=", "k=", "l="]
-        groups = VGroup()
-        for index in range(4):
-            text = Text(index_str[index])
-            number = Integer(0).next_to(text)
-            groups.add(VGroup(text, number))
-        groups.arrange_in_grid(1, 4, buff=0.5)
-        groups.next_to(array, UP)
-        groups.shift(UP * 2.5)
-        self.add(groups)
         xdis = array[1].get_center() - array[0].get_center()
         ydis = array[1 * w].get_center() - array[0].get_center()
 
@@ -134,6 +123,7 @@ class MultiC(Scene):
         add_array = VGroup(*[Text("a") for i in range(h * w)])
         add_array.arrange_in_grid(h, w, 0.5)
         add_array.next_to(address_c, DOWN * 5)
+        add_axis=add_array[1].get_center()-add_array[0].get_center()
         self.play(Create(add_array))
         self.play(
             address_a.copy().animate.next_to(add_array[7 * w], LEFT),
@@ -151,7 +141,7 @@ class MultiC(Scene):
                                width=array[0].width * 2,
                                height=array[0].width * 2).move_to(add_array[6*w].get_center())
         self.play(Create(rect_add_a),Create(rect_add_b),Create(rect_add_c),)
-        self.play(rect_add_a.animate.shift(2*xdis),rect_add_b.animate.shift(4*xdis),rect_add_c.animate.shift(4*xdis),)
+        self.play(rect_add_a.animate.shift(2*add_axis),rect_add_b.animate.shift(4*add_axis),rect_add_c.animate.shift(4*add_axis),)
 
         array_a_center = array[2].get_center()
         array_b_center = array[1 * w + 3].get_center()
@@ -180,6 +170,11 @@ class MultiC(Scene):
                   polygram_b.animate.set_fill(GREEN_B, opacity=0.5),
                   polygram_c.animate.set_fill(YELLOW_B, opacity=0.5))
 
+class VecC(Scene):
+    def construct(self):
+        # rotate arr_add
+        # foreach pixel with a vector to loop
+        pass
 
 if __name__ == "__main__":
     system("manim start.py -pql MultiC")
