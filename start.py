@@ -143,6 +143,7 @@ class MultiC(Scene):
         self.play(Create(rect_add_a),Create(rect_add_b),Create(rect_add_c),)
         self.play(rect_add_a.animate.shift(2*add_axis),rect_add_b.animate.shift(4*add_axis),rect_add_c.animate.shift(4*add_axis),)
 
+        self.play(Create(Text("Memory Repack").next_to(add_array,DOWN*2)))
         array_a_center = array[2].get_center()
         array_b_center = array[1 * w + 3].get_center()
         array_c_center = array[1 * w + 4].get_center()
@@ -169,6 +170,27 @@ class MultiC(Scene):
         self.play(polygram_a.animate.set_fill(RED_B, opacity=0.5),
                   polygram_b.animate.set_fill(GREEN_B, opacity=0.5),
                   polygram_c.animate.set_fill(YELLOW_B, opacity=0.5))
+        # bool align so can run together
+
+        array_vec_top=Text("b").next_to(array[0],LEFT*20)
+        array_vec=VGroup(array_vec_top)
+        array_vec.add(Text("b").next_to(array_vec_top,DOWN+LEFT))
+        array_vec.add(Text("b").next_to(array_vec_top,DOWN))
+        array_vec.add(Text("b").next_to(array_vec_top,DOWN+RIGHT))
+        array_vec.add(Text("b").next_to(array_vec_top,DOWN*3))
+        self.play(Create(array_vec))
+        rec_vec = VGroup(*[Rectangle(color=PURPLE,width=array[0].width*2,height=array[0].width*2) for i in range(5)])
+        rec_vec.arrange_in_grid(1,5,0).move_to(array_vec[2].get_center()).shift(RIGHT*rec_vec[0].width*2)
+        self.play(Create(rec_vec))
+        for i in range(5):
+            self.play(rec_vec.animate.move_to(array_vec[i].get_center()).shift(RIGHT*rec_vec[0].width*2),run_time=0.5)
+        array_vec_in_ori=VGroup()
+        for i in [2,3,4]:
+            array_vec_in_ori.add(rect_add_a.copy().move_to(array[i].get_center()).set_fill(color=RED,opacity=1))
+        self.play(Create(array_vec_in_ori))
+        # for i in []
+
+
 
 class VecC(Scene):
     def construct(self):
